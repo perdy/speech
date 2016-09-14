@@ -1,0 +1,189 @@
+\documentclass[final, 9pt, svgnames]{beamerPerdy}
+\usetheme[
+  bullet=square,			% Modelo de los items de listados (circle, square)
+  pagenumber,				% Numero de paginas en la barra inferior
+  headline=true,			% Barra de navegacion superior (sect y subsect)
+  watermark=img/data-analysis.png,		% Imagen para el fondo
+  background=Amarillo         % Color del degradado del fondo
+]{Perdy}
+
+\setdefaultlanguage{english}
+
+% Comando para usar comentarios
+\newcommand{\comment}[1]{\textcolor{comment}{\footnotesize{#1}\normalsize}}
+
+
+\title{Python Data Analysis and Plotting}
+%\subtitle{Sistemas Neurodifusos}
+\author[J. A. Perdiguero López]{José Antonio Perdiguero López}
+\date{\today}
+\institute[Málaga Python]{Málaga Python: PyDay 2016}
+
+\begin{document}
+
+\setcounter{tocdepth}{2}
+
+% Titulo
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Indice
+\begin{frame}
+  \frametitle{Index}
+  \tableofcontents
+\end{frame}
+
+% Documento
+\section{Introduction}
+  \subsection{What is Data Analysis?}
+  \begin{frame}{What is Data Analysis?}
+    \begin{itemize}[<+->]
+      \item Planning the \emph{gathering of data} to make its analysis easier, more precise or more accurate.
+      \item Procedures for \emph{analyzing data}.
+      \item Techniques for \emph{interpreting the results} of such procedures.
+      \item All the machinery and results of \emph{mathematical statistics} which apply to analyzing data.
+    \end{itemize}
+  \end{frame}
+
+  \subsection{Why Python?}
+  \begin{frame}{Why Python?}
+    \begin{itemize}[<+->]
+      \item Python as Glue.
+      \item Solves the "two-languages" problem: Prototype vs Production.
+      \item Increase programming effectiveness (at a CPU time cost?).
+    \end{itemize}
+  \end{frame}
+  \subsection{Python Data Analysis Stack}
+  \begin{frame}{Python Data Analysis Stack}
+    \begin{itemize}[<+->]
+      \item NumPy (\href{https://www.numpy.org}{https://www.numpy.org})
+      \item Pandas (\href{https://pandas.pydata.org}{https://pandas.pydata.org})
+      \item Plotly (\href{https://plot.ly}{https://plot.ly})
+    \end{itemize}
+  \end{frame}
+\section{Pandas}
+  \subsection{Data Structures}
+  \begin{frame}{Data Structures}
+    \begin{block}{Series}
+      One-dimensional labeled array capable of holding any data type.
+    \end{block}
+
+    \begin{block}{DataFrame}
+      Two-dimensional labeled data structure with columns of potentially different types.
+    \end{block}
+  \end{frame}
+
+  \subsection{Input/Output}
+  \begin{frame}{Input}
+    Pandas DataFrame accepts many different kinds of input:
+		\begin{itemize}
+			\item Dict of 1D ndarrays, lists, dicts, or Series.
+			\item 2-D numpy.ndarray.
+			\item Structured or record ndarray.
+			\item A Series.
+			\item Another DataFrame.
+		\end{itemize}
+  \end{frame}
+  \begin{frame}{Read}
+		DataFrames can be loaded from different sources:
+		\begin{itemize}
+			\item csv
+			\item excel
+			\item hdf
+			\item sql
+			\item json
+			\item msgpack (experimental)
+			\item html
+			\item gbq (experimental)
+			\item stata
+			\item sas
+			\item clipboard
+			\item pickle
+		\end{itemize}
+  \end{frame}
+  \begin{frame}{Write}
+		DataFrames can be directly writted to:
+		\begin{itemize}
+			\item csv
+			\item excel
+			\item hdf
+			\item sql
+			\item json
+			\item msgpack (experimental)
+			\item html
+			\item gbq (experimental)
+			\item stata
+			\item clipboard
+			\item pickle
+		\end{itemize}
+  \end{frame}
+
+  \defverbatim[colored]\selectCode{
+		\begin{codigo}
+		\begin{pythoncode}
+# Get rows from 5 to 10
+df.ix[5:10]
+
+# Get column Foo
+df.ix[:, 'Foo']
+
+# Get rows 1, 3 and 7; and columns Foo and Bar
+df.ix[[1, 3, 7], ['Foo', 'Bar']]
+		\end{pythoncode}
+		\end{codigo}
+	}
+
+	\defverbatim[colored]\filterCode{
+		\begin{codigo}
+		\begin{pythoncode}
+# Get rows whose value of Foo column is positive
+df[df['Foo'] > 0]
+		\end{pythoncode}
+		\end{codigo}
+	}
+
+	\defverbatim[colored]\selectAndFilterCode{
+		\begin{codigo}
+		\begin{pythoncode}
+# Get Bar column for those rows whose value of Foo column is positive
+df.ix[df['Foo'] > 0, 'Bar']
+		\end{pythoncode}
+		\end{codigo}
+	}
+
+  \subsection{Select and Filter}
+  \begin{frame}{Select and Filter}
+		\begin{block}{Select}
+			Select rows, columns or cells using python indexing notation:
+			\selectCode
+		\end{block}
+		\begin{block}{Filter}
+			Apply filters to DataFrames using python expressions:
+			\filterCode
+		\end{block}
+		\begin{block}{Select and Filter}
+			Select rows using filters and index:
+			\selectAndFilterCode
+		\end{block}
+  \end{frame}
+
+  \subsection{Merge}
+  \begin{frame}{Merge Structures}
+		There are two ways of merge pandas DataFrame structures:
+		\begin{description}
+			\item[Concat:] Add a DataFrame just at the end.
+			\item[Merge:] SQL-style merges using join.
+		\end{description}
+  \end{frame}
+
+  \subsection{Group By}
+  \begin{frame}{Group By}
+		The process of \emph{Group By} involves the steps:
+		\begin{description}
+			\item[Split] the data into groups based on some criteria.
+			\item[Apply] a function to each group independently.
+			\item[Combine] the results into a data structure.
+		\end{description}
+  \end{frame}
+\end{document}
