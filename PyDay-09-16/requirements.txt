@@ -1,5 +1,0 @@
-pandas
-plotly
-requests
-jupyter
-ipython
