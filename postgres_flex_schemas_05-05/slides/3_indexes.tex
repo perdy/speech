@@ -1,0 +1,173 @@
+% Indexes
+\section{Indexes}
+\subsection{Hash}
+\begin{frame}[fragile]{Hash}
+    Hash indexes can only handle simple equality comparisons.
+
+    \begin{block}{Operations}
+        \begin{description}
+            \item[\texttt{=}] Equal to
+        \end{description}
+    \end{block}
+
+    \begin{block}{Creation}
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import migrations
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.RunSQL('CREATE INDEX IF NOT EXISTS {index_name} ON '
+                          '{table_name} USING HASH ("{field_name}");'),
+    ]
+        \end{minted}
+    \end{block}
+\end{frame}
+
+\subsection{B-Tree}
+\begin{frame}[fragile]{Binary Tree (B-Tree)}
+    B-trees can handle equality and range queries on data that can be sorted into some ordering.
+    
+    B-tree indexes can also be used to retrieve data in sorted order.
+
+    \begin{block}{Operations}
+        \begin{description}
+            \item[\texttt{<}] Less than
+            \item[\texttt{<}\texttt{=}] Less than or equal to
+            \item[\texttt{=}] Equal to
+            \item[\texttt{>}\texttt{=}] Greater than or equal to
+            \item[\texttt{>}] Greater than
+        \end{description}
+    \end{block}
+
+    \begin{block}{Creation}
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import models
+
+class Foo(models.Model):
+    bar = models.IntegerField(db_index=True)
+        \end{minted}
+    \end{block}
+\end{frame}
+
+\subsection{GiST}
+\begin{frame}[fragile]{Generalized Search Tree (GiST)}
+    GiST indexes are not a single kind of index, it is a balanced, tree-structured access method, that acts as a base template in which to implement arbitrary indexing schemes.
+
+    \begin{block}{Operations}<only@1>
+        \begin{columns}[t]
+            \begin{column}{.5\textwidth}
+                \begin{description}
+                    \item[\texttt{<}\texttt{<}] Is strictly left of?
+                    \item[\texttt{\&}\texttt{<}] Does not extend to the right of?
+                    \item[\texttt{\&}\texttt{>}] Does not extend to the left of?
+                    \item[\texttt{>}\texttt{>}] Is strictly right of?
+                    \item[\texttt{<}\texttt{<}\texttt{|}] Is strictly below?
+                    \item[\texttt{\&}\texttt{<}\texttt{|}] Does not extend above?
+                \end{description}
+            \end{column}
+            \begin{column}{.5\textwidth}
+                \begin{description}
+                    \item[\texttt{|}\texttt{\&}\texttt{>}] Does not extend below?
+                    \item[\texttt{|}\texttt{>}\texttt{>}] Is strictly above?
+                    \item[\texttt{@}\texttt{>}] Contains?
+                    \item[\texttt{<}\texttt{@}] Contained in or on?
+                    \item[\texttt{\textasciitilde}\texttt{=}] Same as?
+                    \item[\texttt{\&}\texttt{\&}] Overlaps?
+                \end{description}
+            \end{column}
+        \end{columns}
+    \end{block}
+
+    \begin{block}{Creation}<only@2>
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import migrations
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.RunSQL('CREATE INDEX IF NOT EXISTS {index_name} ON '
+                          '{table_name} USING GIST ("{field_name}");'),
+    ]
+        \end{minted}
+    \end{block}
+\end{frame}
+
+\subsection{SP-GiST}
+\begin{frame}[fragile]{Space-partitioned GiST (SP-GiST)}
+    SP-GiST supports partitioned search trees, which facilitate development of a wide range of different non-balanced data structures.
+    
+    \begin{block}{Operations}
+        \begin{description}
+            \item[\texttt{<}\texttt{<}] Is strictly left of?
+            \item[\texttt{>}\texttt{>}] Is strictly right of?
+            \item[\texttt{\textasciitilde}\texttt{=}] Same as?
+            \item[\texttt{<}\texttt{@}] Contained in or on?
+            \item[\texttt{<}\texttt{\textasciicircum}] Is below (allows touching)?
+            \item[\texttt{>}\texttt{\textasciicircum}] Is above (allows touching)?
+        \end{description}
+    \end{block}
+
+    \begin{block}{Creation}
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import migrations
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.RunSQL('CREATE INDEX IF NOT EXISTS {index_name} ON '
+                          '{table_name} USING SPGIST ("{field_name}");'),
+    ]
+        \end{minted}
+    \end{block}
+\end{frame}
+
+\subsection{GIN}
+\begin{frame}[fragile]{Generalized Inverted Index (GIN)}
+    GIN is designed for handling cases where the items to be indexed are composite values, and the queries to be handled by the index need to search for element values that appear within the composite items.
+
+    \begin{block}{Operations}
+        \begin{description}
+            \item[\texttt{<}\texttt{@}] Contained in or on?
+            \item[\texttt{@}\texttt{>}] Contains?
+            \item[\texttt{=}] Equal to
+            \item[\texttt{\&}\texttt{\&}] Overlaps?
+        \end{description}
+    \end{block}
+
+    \begin{block}{Creation}
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import migrations
+from django.contrib.postgres.indexes import GinIndex
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.AddIndex("Foo", GinIndex(fields=[], name=None)),
+    ]
+        \end{minted}
+    \end{block}
+\end{frame}
+
+\subsection{BRIN}
+\begin{frame}[fragile]{Block Range Indexes (BRIN)}
+    BRIN is designed for handling very large tables in which certain columns have some natural correlation with their physical location within the table.
+
+    \begin{block}{Operations}
+        \begin{description}
+            \item[\texttt{<}] Less than
+            \item[\texttt{<}\texttt{=}] Less than or equal to
+            \item[\texttt{=}] Equal to
+            \item[\texttt{>}\texttt{=}] Greater than or equal to
+            \item[\texttt{>}] Greater than
+        \end{description}
+    \end{block}
+
+    \begin{block}{Creation}
+        \begin{minted}[fontsize=\scriptsize]{python}
+from django.db import migrations
+from django.contrib.postgres.indexes import GinIndex
+
+class Migration(migrations.Migration):
+    operations = [
+        migrations.AddIndex("Foo", BrinIndex(fields=[], name=None, pages_per_range=None)),
+    ]
+        \end{minted}
+    \end{block}
+\end{frame}

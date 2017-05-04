@@ -1,0 +1,56 @@
+\def\pgfsysdriver{pgfsys-dvipdfm.def}
+\documentclass[final, 9pt, svgnames]{beamerPerdy}
+\usetheme[
+    titleformat title=smallcaps,
+    progressbar=frametitle,
+    numbering=counter
+]{metropolis}
+
+% \setbeameroption{show notes}
+% \setbeameroption{show notes on second screen=right}
+
+\setdefaultlanguage{english}
+
+\title{Flex schemas with PostgreSQL and Django}
+\subtitle{Advanced PostgreSQL: Models halfway between Relational and NoSQL}
+\author[J. A. Perdiguero López]{
+José Antonio Perdiguero López\\
+\href{https://github.com/PeRDy}{\scriptsize{\faGithub\; https://github.com/PeRDy}}\\
+\href{https://www.linkedin.com/in/josé-antonio-perdiguero-lópez-732a9768/}{\scriptsize{\faLinkedin\; https://www.linkedin.com/in/josé-antonio-perdiguero-lópez-732a9768/}}\\
+\scriptsize{\faAt\; perdy.hh@gmail.com}}
+\date{May 5, 2017}
+\institute[Málaga Python]{Málaga Python MeetUp\\OpenSouthCode 2017}
+
+\begin{document}
+
+% Title
+\begin{frame}[noframenumbering, plain]
+    \titlepage
+\end{frame}
+
+% Index
+\begin{frame}[noframenumbering, plain]{Index}
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+            \setbeamertemplate{section in toc}[circle]
+            \tableofcontents[sections={1-2}]
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \setbeamertemplate{section in toc}[circle]
+            \tableofcontents[sections={3-4}]
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\include{1_introduction}
+\include{2_fields}
+\include{3_indexes}
+\include{4_conclusion}
+
+\begin{frame}[standout]
+    \huge{Use the right Tool for the Job \!}
+
+    \huge{\faWrench}
+\end{frame}
+
+\end{document}

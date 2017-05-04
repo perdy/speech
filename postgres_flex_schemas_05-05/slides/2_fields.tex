@@ -1,0 +1,295 @@
+% Fields
+\section{Fields}
+\subsection{ArrayField}
+\begin{frame}[fragile]{ArrayField}
+    A field for storing lists of data that can be nested to store multi-dimensional arrays.
+
+    \begin{block}{Example}
+        \begin{minted}[fontsize=\footnotesize]{python}
+from django.db import models
+from django.contrib.postgres.fields import ArrayField
+
+class Post(models.Model):
+    name = models.CharField(max_length=200)
+    bar = ArrayField(models.CharField(max_length=200), blank=True)
+
+    def __str__(self):
+        return self.name
+
+>>> Post.objects.create(name='First post', tags=['thoughts', 'django'])
+>>> Post.objects.create(name='Second post', tags=['thoughts'])
+>>> Post.objects.create(name='Third post', tags=['tutorial', 'django'])
+        \end{minted}
+    \end{block}
+\end{frame}
+\begin{frame}[fragile]{ArrayField: Queries}
+    \begin{block}{Contains (\texttt{@}\texttt{>})}<only@1>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__contains=['thoughts'])
+<QuerySet [<Post: First post>, <Post: Second post>]>
+
+>>> Post.objects.filter(tags__contains=['django'])
+<QuerySet [<Post: First post>, <Post: Third post>]>
+
+>>> Post.objects.filter(tags__contains=['django', 'thoughts'])
+<QuerySet [<Post: First post>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Contained By (\texttt{<}\texttt{@})}<only@1>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__contained_by=['thoughts', 'django'])
+<QuerySet [<Post: First post>, <Post: Second post>]>
+
+>>> Post.objects.filter(tags__contained_by=['thoughts', 'django', 'tutorial'])
+<QuerySet [<Post: First post>, <Post: Second post>, <Post: Third post>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Overlap (\texttt{\&}\texttt{\&})}<only@2>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__overlap=['thoughts'])
+<QuerySet [<Post: First post>, <Post: Second post>]>
+
+>>> Post.objects.filter(tags__overlap=['thoughts', 'tutorial'])
+<QuerySet [<Post: First post>, <Post: Second post>, <Post: Third post>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Len}<only@2>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__len=1)
+<QuerySet [<Post: Second post>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Index Transforms}<only@3>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__0='thoughts')
+<QuerySet [<Post: First post>, <Post: Second post>]>
+
+>>> Post.objects.filter(tags__1__iexact='Django')
+<QuerySet [<Post: First post>]>
+
+>>> Post.objects.filter(tags__276='javascript')
+<QuerySet []>
+        \end{minted}
+    \end{block}
+    \begin{block}{Slice Transforms}<only@3>
+        \begin{minted}[fontsize=\footnotesize]{python}
+>>> Post.objects.filter(tags__0_1=['thoughts'])
+<QuerySet [<Post: First post>, <Post: Second post>]>
+
+>>> Post.objects.filter(tags__0_2__contains=['thoughts'])
+<QuerySet [<Post: First post>, <Post: Second post>]>
+        \end{minted}
+    \end{block}
+
+    \note{
+        \begin{description}
+            \item[First post:] thoughts, django.
+            \item[Second post:] thoughts.
+            \item[Third post:] tutorial, django.
+        \end{description}
+
+        Remember here the relevance of the lookups and transform defined by Django, because these will be the most widely used, so it's a good idea to \textbf{index} them.
+    }
+\end{frame}
+
+\begin{frame}{ArrayField: Forms}
+    \begin{block}{SimpleArrayField}
+        A simple field which maps to an array. It is represented by an HTML \texttt{<input>}.
+    \end{block}
+    \begin{block}{SplitArrayField}
+        This field handles arrays by reproducing the underlying field a fixed number of times.
+    \end{block}
+\end{frame}
+
+\subsection{HStoreField}
+\begin{frame}[fragile]
+    \frametitle{HStoreField}
+
+    A field for storing key-value pairs. The Python data type used is a dict that maps \emph{strings} into \emph{nullable strings}.
+
+    \begin{onlyenv}<1>
+        \begin{block}{Example}
+            \begin{minted}[fontsize=\scriptsize]{python}
+from django.contrib.postgres.fields import HStoreField
+from django.db import models
+
+class Dog(models.Model):
+    name = models.CharField(max_length=200)
+    data = HStoreField()
+
+    def __str__(self):
+        return self.name
+
+>>> Dog.objects.create(name='Rufus',
+                       data={'breed': 'labrador', 'owner': 'Bob', 'friend': 'Bobby'})
+>>> Dog.objects.create(name='Meg',
+                       data={'breed': 'collie', 'owner': 'Bob', 'toy': 'yellow ball'})
+>>> Dog.objects.create(name='Fred', data={})
+            \end{minted}
+        \end{block}
+    \end{onlyenv}
+
+    \begin{onlyenv}<2>
+        \begin{block}{PostgreSQL extension}
+            \begin{minted}[fontsize=\scriptsize]{python}
+from django.contrib.postgres.operations import HStoreExtension
+
+class Migration(migrations.Migration):
+    ...
+
+    operations = [
+        HStoreExtension(),
+        ...
+    ]
+            \end{minted}
+        \end{block}
+    \end{onlyenv}
+
+    \note {
+        Remember that for using HStoreField is required to install \textbf{hstore extension}.
+    }
+\end{frame}
+\begin{frame}[fragile]{HStoreField: Queries}
+    \begin{block}{Key Lookups}<only@1>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__breed='collie')
+<QuerySet [<Dog: Meg>]>
+
+>>> Dog.objects.filter(data__breed__contains='l')
+<QuerySet [<Dog: Rufus>, <Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Contains (\texttt{@}\texttt{>})}<only@1>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__contains={'owner': 'Bob'})
+<QuerySet [<Dog: Rufus>, <Dog: Meg>]>
+
+>>> Dog.objects.filter(data__contains={'breed': 'collie'})
+<QuerySet [<Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Contained By (\texttt{<}\texttt{@})}<only@2>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__contained_by={'breed': 'collie', 'owner': 'Bob'})
+<QuerySet [<Dog: Meg>, <Dog: Fred>]>
+
+>>> Dog.objects.filter(data__contained_by={'breed': 'collie'})
+<QuerySet [<Dog: Fred>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Has Key (\texttt{?})}<only@2>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__has_key='toy')
+<QuerySet [<Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Has Any Keys (\texttt{?}\texttt{|})}<only@2>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__has_any_keys=['toy', 'friend'])
+<QuerySet [<Dog: Rufus>, <Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Has Keys (\texttt{?}\texttt{\&})}<only@3>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__has_keys=['breed', 'owner'])
+<QuerySet [<Dog: Rufus>, <Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Keys}<only@3>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__keys__overlap=['breed', 'toy'])
+<QuerySet [<Dog: Rufus>, <Dog: Meg>]>
+        \end{minted}
+    \end{block}
+    \begin{block}{Values}<only@3>
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__values__contains=['collie'])
+<QuerySet [<Dog: Meg>]>
+        \end{minted}
+    \end{block}
+
+    \note {
+        \begin{description}
+            \item[Rufus:] 
+                \begin{description}
+                    \item[breed:] labrador.
+                    \item[owner:] Bob.
+                    \item[friend:] Bobby.
+                \end{description}
+            \item[Meg:]
+                \begin{description}
+                    \item[breed:] collie.
+                    \item[owner:] Bob.
+                    \item[toy:] yellow ball.
+                \end{description}
+            \item[Fred:]
+        \end{description}
+
+        Keys example uses \texttt{overlap} because order is not guaranteed.
+    }
+\end{frame}
+\begin{frame}[fragile]{HStoreField: Forms}
+    \begin{block}{HStoreField}
+        A field which accepts JSON encoded data for an HStoreField, casting all values (except nulls) to strings. It is represented by an HTML \texttt{<textarea>}.
+    \end{block}
+\end{frame}
+
+\subsection{JSONField}
+\begin{frame}[fragile]{JSONField}
+    A field for storing JSON encoded data. In Python the data is represented in its Python native format: dictionaries, lists, strings, numbers, booleans and \texttt{None}.
+
+    \begin{block}{Example}
+        \begin{minted}[fontsize=\footnotesize]{python}
+from django.contrib.postgres.fields import JSONField
+from django.db import models
+
+class Dog(models.Model):
+    name = models.CharField(max_length=200)
+    data = JSONField()
+
+    def __str__(self):
+        return self.name
+
+>>> Dog.objects.create(name='Rufus', data={
+...     'breed': 'labrador',
+...     'owner': {
+...         'name': 'Bob',
+...         'other_pets': [{'name': 'Fishy'}],
+...     },
+... })
+>>> Dog.objects.create(name='Meg', data={'breed': 'collie'})
+        \end{minted}
+    \end{block}
+
+    \note {
+        Explain the differentes between \emph{JSON} and \emph{JSONB}.
+    }
+\end{frame}
+\begin{frame}[fragile]{JSONField: Queries}
+    JSONField shares lookups with HStoreField:
+    \begin{itemize}
+        \item Contains (\texttt{@}\texttt{>})
+        \item Contained By (\texttt{<}\texttt{@})
+        \item Has Key (\texttt{?})
+        \item Has Any Keys (\texttt{?}\texttt{|})
+        \item Has Keys (\texttt{?}\texttt{\&})
+    \end{itemize}
+
+    \begin{block}{Key, Index and Path Lookups}
+        \begin{minted}[fontsize=\scriptsize]{python}
+>>> Dog.objects.filter(data__breed='collie')
+<QuerySet [<Dog: Meg>]>
+
+>>> Dog.objects.filter(data__owner__name='Bob')
+<QuerySet [<QuerySet <Dog: Rufus>]>
+
+>>> Dog.objects.filter(data__owner__other_pets__0__name='Fishy')
+<QuerySet [<Dog: Rufus>]>
+        \end{minted}
+    \end{block}
+\end{frame}
+\begin{frame}[fragile]{JSONField: Forms}
+    \begin{block}{JSONField}
+        A field which accepts JSON encoded data for a JSONField. It is represented by an HTML \texttt{<textarea>}.
+    \end{block}
+\end{frame}

@@ -1,0 +1,91 @@
+% Introduction 
+\section{Introduction}
+\subsection{Relational Databases}
+\begin{frame}{Relational Databases}
+    Relational databases are those based on \emph{Relational Model}, invented by \emph{E.F. Codd}.
+    
+    The relational model define that all the data is represented in terms of \alert{tuples}, grouped in \alert{relations}. These relations consists of a set of attributes and a set of $n$ tuples, and are called \alert{tables}.
+\end{frame}
+\begin{frame}{Relational Databases: Pros vs Cons}
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+            \begin{exampleblock}{\huge\faThumbsOUp}
+                \begin{itemize}
+                    \item Structured data
+                    \item Strong typing
+                    \item Integrity and constraints
+                    \item Indexes
+                    \item Support
+                    \item Fast querying
+                    \item Maturity
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \begin{alertblock}{\huge\faThumbsODown}
+                \begin{itemize}
+                    \item Admin
+                    \item Poor horizontal scaling
+                    \item Schema and data migrations
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{NoSQL Databases}
+\begin{frame}{NoSQL Databases}
+    \begin{block}{Key-Value}
+        Key-Value stores are the simplest NoSQL data stores. The value is a blob, and due to primary-key access they have a great performance and scalability.
+    \end{block}
+    \begin{block}{Document}
+        Documents are the main concept in document databases. The database stores and retrieves documents, which can be XML, JSON, BSON, and so on.
+    \end{block}
+    \begin{block}{Column family}
+        Column-family databases store data in column families as rows that have many columns associated with a row key.
+    \end{block}
+    \begin{block}{Graph}
+        Graph databases allow you to store entities and relationships between these entities. Entities are also known as nodes, which have properties. Relations are known as edges that can have properties. 
+    \end{block}
+    
+    \note {
+        Memcached and Redis as \textbf{Key-Value} databases.
+        
+        MongoDB as \textbf{document} database.
+
+        Cassandra is a \textbf{column family} database. These databases are like relational tables but each row can have a different subset of columns.
+        
+    In \textbf{graph} databases think of a node as an instance of an object in the application. OrientDB and Neo4j.
+    }
+\end{frame}
+\begin{frame}{NoSQL Databases: Pros vs Cons}
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+            \begin{exampleblock}{\huge\faThumbsOUp}
+                \begin{itemize}
+                    \item Fast writing
+                    \item Horizontal scaling
+                    \item Reduced admin tasks
+                    \item Flexible
+                    \item Mostly open-source
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \begin{alertblock}{\huge\faThumbsODown}
+                \begin{itemize}
+                    \item Slow querying
+                    \item Support
+                    \item Maturity
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\subsection{Relational vs NoSQL}
+\begin{frame}[standout]
+    \huge{Should I use a Relational or NoSQL database?}
+
+    \huge{\faDatabase}
+\end{frame}

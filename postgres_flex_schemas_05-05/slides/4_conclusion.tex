@@ -1,0 +1,59 @@
+% Conclusion
+\section{Conclusion}
+\subsection{PostgreSQL as Relational and NoSQL}
+\begin{frame}[standout]
+    \huge{PostgreSQL as Relational and NoSQL?}
+
+    \huge{\faDatabase}
+\end{frame}
+
+\subsection{Use cases}
+\begin{frame}[fragile]{Use case: Scraper schema}
+    \begin{block}{Problem}<1->
+        Wants to scrape some websites crawling over search results and store all these results. These information must be accesible querying by website, date, and fuzzy matching over item name.
+    \end{block}
+
+    \begin{block}{Schema}<2->
+        \begin{minted}[fontsize=\footnotesize]{python}
+from django.contrib.postgres.fields import JSONField
+from django.db import models
+
+class Item(models.Model):
+    website = models.URLField()
+    name = models.CharField(max_length=200)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    data = JSONField()
+
+>>> Item.objects.annotate(
+...     similarity=TrigramSimilarity('name', 'Similar item name'),
+... ).filter(
+...     similarity__gt=0.5,
+...     timestamp__year=2017,
+...     website='http://www.example.com'
+... ).order_by('-similarity')
+        \end{minted}
+    \end{block}
+\end{frame}
+\begin{frame}[fragile]{Use case: Audit schema}
+    \begin{block}{Problem}<1->
+        Integrate an audit or logging system into an application. This system generates an entry for each request-response done by users and associates it to they. Entries must contains request and response data and metadata.
+    \end{block}
+
+    \begin{block}{Schema}<2->
+        \begin{minted}[fontsize=\footnotesize]{python}
+import datetime
+
+from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
+from django.db import models
+
+class Entry(models.Model):
+    user = models.ForeignKey(User)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    request = JSONField()
+    response = JSONField()
+
+>>> Entry.objects.filter(user__id=1, timestamp=datetime.datetime.today())
+        \end{minted}
+    \end{block}
+\end{frame}
