@@ -1,0 +1,66 @@
+\documentclass[final, 9pt, svgnames]{beamerPerdy}
+\usetheme[
+    titleformat title=smallcaps,
+    progressbar=frametitle,
+    numbering=fraction
+]{metropolis}
+
+\usetikzlibrary{positioning,fit,arrows.meta}
+
+%\setbeameroption{show notes on second screen=right}
+
+\setdefaultlanguage{english}
+
+% Comando para usar comentarios
+\newcommand{\comment}[1]{\textcolor{comment}{\footnotesize{#1}\normalsize}}
+
+\newcommand\ImageNode[3][]{
+    \node[draw=mLightBrown,line width=1pt,#1] (#2) {\includegraphics[width=1cm,height=1cm]{#3}};
+}
+
+
+\title{Packaging and Distributing}
+\subtitle{Create, package and distribute your own python application}
+\author[J. A. Perdiguero López]{
+José Antonio Perdiguero López\\
+\href{http://www.perdy.top}{\scriptsize{\faGlobe\; http://www.perdy.top}}\\
+\href{https://github.com/PeRDy}{\scriptsize{\faGithub\; https://github.com/PeRDy}}\\
+\href{https://www.linkedin.com/in/perdy}{\scriptsize{\faLinkedin\; https://www.linkedin.com/in/perdy}}\\
+\scriptsize{\faAt\; perdy.hh@gmail.com}}
+\date{September 24, 2017}
+\institute[Piksel]{Lead Developer @ Piksel, Machine Learning Team}
+
+\begin{document}
+
+% Title
+\begin{frame}[noframenumbering, plain]
+    \titlepage
+\end{frame}
+
+% Index
+\begin{frame}[noframenumbering, plain]{Index}
+    \begin{columns}[t]
+        \begin{column}{5cm}
+            \setbeamertemplate{section in toc}[circle]
+            \tableofcontents[sections={1-2}]
+        \end{column}
+        \begin{column}{5cm}
+            \setbeamertemplate{section in toc}[circle]
+            \tableofcontents[sections={3-5}]
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\include{1_introduction}
+\include{2_creation}
+\include{3_packaging}
+\include{4_distributing}
+\include{5_conclusion}
+
+\begin{frame}[standout]
+    \Huge{Open source your code !}
+
+    \Huge{\faLinux}
+\end{frame}
+
+\end{document}

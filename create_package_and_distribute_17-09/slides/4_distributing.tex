@@ -1,0 +1,36 @@
+% Distributing
+\section{Distributing}
+\subsection{Register the application}
+\begin{frame}[fragile]{Register the application}
+    \begin{block}{PyPI account}
+        Create a PyPI\footnote[1]{\href{https://pypi.python.org/pypi}{https://pypi.python.org/pypi}} account.
+        Configure \texttt{.pypirc} file with PyPI credentials.
+    \end{block}
+    \pause
+    \begin{block}{Application register}
+        Use twine\footnote[2]{\href{https://github.com/pypa/twine}{https://github.com/pypa/twine}} with a package of your application to register it in PyPI:
+        \begin{minted}{bash}
+twine register dist/project-name.whl
+        \end{minted}
+    \end{block}
+    \note{
+        Hay que crear una cuenta en PyPI y definir los credenciales en el fichero de configuración .pypirc
+
+        Para subir el paquete al repositorio se usa twine, principalmente por seguridad, ya que encripta las conexiones. Twine te permite registrar tu aplicación en el repositorio.
+    }
+\end{frame}
+
+\subsection{Upload a new version}
+\begin{frame}[fragile]{Upload a new version}
+    \begin{block}{Upload packages}
+        Use twine again to upload all packages to PyPI:
+        \begin{minted}{bash}
+twine upload dist/project-name.whl
+twine upload dist/project-name.tar.gz
+        \end{minted}
+    \end{block}
+    \note{
+        Generalmente es una buena idea subir tanto un fichero wheel como un tar.gz, para intérpretes no compatibles.
+    }
+\end{frame}
+ 

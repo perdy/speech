@@ -1,0 +1,125 @@
+% Conclusion
+\section{Conclusion}
+\subsection{Full workflow}
+\begin{frame}[fragile]{Full workflow}
+    \makebox[\textwidth][c]{
+    \begin{tikzpicture}[
+            node distance=0.8cm,
+            >={Triangle[angle=60:1pt 2]},
+            shorten >= 2pt,
+            shorten <= 2pt,
+            arrow/.style={
+                ->,
+                mLightBrown,
+                line width=3pt
+            }
+        ]
+        \ImageNode[label={Create Project}]{A}{python_logo.png}
+        \ImageNode[label={Configure},right=of A]{B}{python_logo.png}
+        \ImageNode[label={0:Code},right=of B]{C}{python_logo.png}
+        \ImageNode[label={Upgrade Version},above right=of C]{D}{python_logo.png}
+        \ImageNode[label={Package},right=of D]{E}{python_logo.png}
+        \ImageNode[label={PyPI},right=of E]{F}{python_logo.png}
+
+        \ImageNode[label={-90:GitHub},below right=of C]{G}{github_logo.png}
+        \ImageNode[label={-90:Travis},right=of G]{H}{travis_logo.png}
+        \ImageNode[label={-90:Codecov},right=of H]{I}{codecov_logo.png}
+        \ImageNode[label={0:ReadTheDocs},below=of H]{J}{readthedocs_logo.png}
+
+        \draw[arrow] (A) -- (B);
+        \draw[arrow] (B) -- (C);
+        \draw[arrow] (C) -- (D);
+        \draw[arrow] (D) -- (E);
+        \draw[arrow] (E) -- (F);
+        \draw[arrow] (C) -- (G);
+        \draw[arrow] (G) -- (H);
+        \draw[arrow] (H) -- (I);
+        \draw[arrow] (G) -- (J);
+
+        \onslide<2->{
+            \node (X) [draw=mLightGreen, fit= (A) (B), inner sep=0.55cm, thick, fill=mLightGreen, fill opacity=0.1] {};
+            \node [yshift=1.5ex, mLightGreen] at (X.south) {Creation};
+        }
+        \onslide<3->{
+            \node (Y) [draw=mLightGreen, fit= (D) (E) (F), inner sep=0.55cm, thick, fill=mLightGreen, fill opacity=0.1] {};
+            \node [yshift=1.5ex, mLightGreen] at (Y.south) {Packaging \& Distributing};
+        }
+        \onslide<4->{
+            \node (Z) [draw=mLightGreen, fit= (G) (H) (I) (J), inner sep=0.55cm, thick, fill=mLightGreen, fill opacity=0.1] {};
+            \node [yshift=1.5ex, mLightGreen] at (Z.south) {Continuous Integration};
+        }
+    \end{tikzpicture}
+    }
+    \note {
+        El desarrollo de una nueva funcionalidad se podría dividir en tres módulos:
+        \begin{enumerate}
+            \item Creación.
+            \item Empaquetado y distribución.
+            \item Integración continua.
+        \end{enumerate}
+    }
+\end{frame}
+
+\subsection{Simplified workflow}
+\begin{frame}[fragile]{Simplified workflow I}
+    \makebox[\textwidth][c]{
+    \begin{tikzpicture}[
+            node distance=0.8cm,
+            >={Triangle[angle=60:1pt 2]},
+            shorten >= 2pt,
+            shorten <= 2pt,
+            arrow/.style={
+                ->,
+                mLightBrown,
+                line width=3pt
+            }
+        ]
+        \ImageNode[label={Cookiecutter}]{A}{python_logo.png}
+        \ImageNode[label={0:Code},right=of A]{B}{python_logo.png}
+        \ImageNode[label={Clinner Build},above right=of B]{C}{python_logo.png}
+
+        \ImageNode[label={-90:GitHub},below right=of B]{G}{github_logo.png}
+        \ImageNode[label={-90:Travis},right=of G]{H}{travis_logo.png}
+        \ImageNode[label={-90:Codecov},right=of H]{I}{codecov_logo.png}
+        \ImageNode[label={0:ReadTheDocs},below=of H]{J}{readthedocs_logo.png}
+
+        \draw[arrow] (A) -- (B);
+        \draw[arrow] (B) -- (C);
+        \draw[arrow] (B) -- (G);
+        \draw[arrow] (G) -- (H);
+        \draw[arrow] (H) -- (I);
+        \draw[arrow] (G) -- (J);
+    \end{tikzpicture}
+    }
+    \note{
+        Los módulos anteriores son sustituidos por:
+        \begin{enumerate}
+            \item Creación, reemplazado por cookiecutter.
+            \item Empaquetado y distribución, reemplazado por clinner.
+            \item Integración continua, automático.
+        \end{enumerate}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Simplified workflow II}
+    \begin{block}{Workflow execution}
+        \begin{minted}{bash}
+cookiecutter <project_name>
+...code...
+python build.py dist (patch|minor|major)
+git push
+        \end{minted}
+        \note{
+            \begin{enumerate}
+                \item Crea una vez el proyecto con cookicutter.
+                \item Desarrolla una nueva funcionalidad.
+                \item Sube de versión, empaqueta y distribuye con un comando.
+                \item Pushea tu código.
+            \end{enumerate}
+
+            Se dedica mucho más tiempo a desarrollar ya que todo el proceso de empaquetado y distribución es casi automático.
+        }
+    \end{block}
+\end{frame}
+
+

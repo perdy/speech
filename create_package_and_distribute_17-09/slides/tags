@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+1_introduction	Slides.tex	/^\\end{frame}$/;"	i
+2_creation	Slides.tex	/^\\include{1_introduction}$/;"	i
+3_packaging	Slides.tex	/^\\include{2_creation}$/;"	i
+4_distributing	Slides.tex	/^\\include{3_packaging}$/;"	i
+5_conclusion	Slides.tex	/^\\include{4_distributing}$/;"	i
+Bind services	2_creation.tex	/^\\end{frame}$/;"	u
+Conclusion	5_conclusion.tex	/^% Conclusion$/;"	s
+Create the project skeleton	2_creation.tex	/^\\end{frame}$/;"	u
+Creating a package	3_packaging.tex	/^\\end{frame}$/;"	u
+Creation	2_creation.tex	/^% Creation$/;"	s
+Distributing	4_distributing.tex	/^% Distributing$/;"	s
+Full workflow	5_conclusion.tex	/^\\section{Conclusion}$/;"	u
+Introduction	1_introduction.tex	/^% Introduction $/;"	s
+Packaging	3_packaging.tex	/^% Packaging$/;"	s
+Project hierarchy	2_creation.tex	/^\\end{frame}$/;"	u
+Register the application	4_distributing.tex	/^\\section{Distributing}$/;"	u
+Simplified workflow	5_conclusion.tex	/^\\end{frame}$/;"	u
+Storing the project	2_creation.tex	/^\\section{Creation}$/;"	u
+Test your application	3_packaging.tex	/^\\section{Packaging}$/;"	u
+Upload a new version	4_distributing.tex	/^\\end{frame}$/;"	u
+Why should I distribute my application 	1_introduction.tex	/^\\section{Introduction}$/;"	u

@@ -1,0 +1,132 @@
+% Introduction 
+\section{Introduction}
+\subsection{Why should I distribute my application?}
+\begin{frame}{Why should I distribute my application?}
+    \begin{itemize}
+        \item Given enough eyeballs, all bugs are shallow.
+        \item Upstream improvements.
+        \item Force multiplier.
+        \item Modular.
+        \item Great advertising.
+        \item Attract talent.
+        \item Stand on the shoulders of giants.
+        \item Best technical interview possible.
+        \item Show your code.
+    \end{itemize}
+    \note{
+        Si uno usa software open source, es del interés de todos contribuir. De esta forma, la cantidad de desarrolladores de cada proyecto es enorme, incrementando la cantidad de ideas para nuevas funcionalidades, ojos para detectar bugs, la riqueza y calidad del código... Dada la naturaleza de las contribuciones a estos proyectos, suelen estar bien modularizados.
+
+    Los desarrolladores que contribuyen en proyectos open source suelen responder al perfil de desarrolladores con ganas de enfrentarse a problemas por solucionar. Esto, sumado a que puedes evaluar a un desarrollador por el código con el que ya ha contribuído a tus proyectos, es un aliciente para las empresas.
+    }
+    \footnotetext[1]{\href{https://opensource.com/life/15/12/why-open-source}{https://opensource.com/life/15/12/why-open-source}}
+\end{frame}
+
+\subsection{Versioning}
+\begin{frame}{Versioning}
+    \begin{block}{Version schema}
+        A normal version must be denoted by \texttt{X.Y.Z} where \texttt{X}, \texttt{Y} and \texttt{Z} are positive integers. \texttt{X} represents the major version, \texttt{Y} the minor version and \texttt{Z} the patch version. Version \texttt{1.0.0} defines the public API.
+    \end{block}
+
+    \begin{block}{Version upgrade}
+        Given a version number, increment:
+        \begin{description}
+            \item[Major] version when you make incompatible API changes. Reset minor and patch version to \texttt{0}.
+            \item[Minor] version when you add functionality in a backwards-compatible manner. Reset patch version to \texttt{0}.
+            \item[Patch] version when you make backwards-compatible bug fixes.
+        \end{description}
+    \end{block}
+    \footnotetext[1]{\href{http://semver.org/}{http://semver.org/}}
+    \note {
+        Breve resumen del SemVer. 
+        \begin{description} 
+            \item[Major] cambios incompatibles en la API pública. 
+            \item[Minor] nuevas funcionalidades. 
+            \item[Patch] bugfixing.
+        \end{description}
+    }
+\end{frame}
+
+\subsection{Tools}
+\begin{frame}{Tools I}
+    \begin{block}{Prospector}
+        Static code analysis using different tools.
+        \href{https://github.com/landscapeio/prospector}{https://github.com/landscapeio/prospector}
+    \end{block}
+    \pause
+    \begin{block}{Sphinx}
+        Create documentation for your project.
+        \href{https://github.com/sphinx-doc/sphinx}{https://github.com/sphinx-doc/sphinx}
+    \end{block}
+    \pause
+    \begin{block}{Bumpversion}
+        Utility to upgrade your project version.
+        \href{https://github.com/peritus/bumpversion}{https://github.com/peritus/bumpversion}
+    \end{block}
+    \pause
+    \begin{block}{Pre-commit}
+        Utility that does some checks before git commits.
+        \href{https://github.com/pre-commit/pre-commit}{https://github.com/pre-commit/pre-commit}
+    \end{block}
+\end{frame}
+\begin{frame}[fragile]{Tools II}
+    \begin{block}{Tox}
+        Run your tests using many different python interpreters.
+        \href{https://github.com/tox-dev/tox}{https://github.com/tox-dev/tox}
+    \end{block}
+    \pause
+    \begin{block}{Cookiecutter}
+        Application that creates project skeletons using Jinja templates.
+        \href{https://github.com/audreyr/cookiecutter}{https://github.com/audreyr/cookiecutter}
+    \end{block}
+    \pause
+    \begin{block}{Cookiecutter Template}
+        Cookiecutter template for Python packages.
+        \href{https://github.com/PeRDy/cookiecutter-python-package}{https://github.com/PeRDy/cookiecutter-python-package}
+    \end{block}
+    \pause
+    \begin{block}{Clinner}
+        Utility to create powerful Command Line Interfaces with a few lines.
+        \href{https://github.com/PeRDy/clinner}{https://github.com/PeRDy/clinner}
+    \end{block}
+    \note{
+        \begin{description}
+            \item[Tox] facilita la ejecución de tests bajo diferentes intérpretes de Python.
+
+            \item[Cookiecutter] se encarga de crear fácilmente la estructura de un proyecto desde cero.
+
+            \item[Clinner] es la piedra angular del proceso de crear un paquete, testearlo y distribuirlo. La plantilla genera una aplicación de línea de comando que permite simplificar el proceso de construcción. La documentación se puede consultar en ReadTheDocs.
+        \end{description}
+    }
+\end{frame}
+
+\begin{frame}{Services}
+    \begin{block}{PyPI}
+        Python Package Index, the main repository of python software.
+        \href{https://pypi.python.org/pypi}{https://pypi.python.org/pypi}
+    \end{block}
+    \pause
+    \begin{block}{GitHub}
+        Repositories for your source code.
+        \href{https://github.com}{https://github.com}
+    \end{block}
+    \pause
+    \begin{block}{Travis}
+        Continuous Integration service.
+        \href{https://travis-ci.org/}{https://travis-ci.org/}
+    \end{block}
+    \pause
+    \begin{block}{Codecov}
+        Keeps the changes of test coverage of your code.
+        \href{https://codecov.io}{https://codecov.io}
+    \end{block}
+    \pause
+    \begin{block}{ReadTheDocs}
+        Stores and serves documentation for your project.
+        \href{https://readthedocs.io}{https://readthedocs.io}
+    \end{block}
+    \note{
+        Alternativas a GitHub: \emph{Bitbucket}, \emph{Gitlab}.
+
+        \emph{Travis} y \emph{Codecov} son gratis para proyectos open source.
+    }
+\end{frame}
