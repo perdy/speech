@@ -1,0 +1,45 @@
+% Components
+\section{Components}
+\begin{frame}[fragile]{Validation as part of the view}
+    \begin{minted}[fontsize=\footnotesize]{python}
+def list_puppy(request: Request) -> Response:
+    """
+    List all puppies !
+    """
+    puppies = Puppy.objects.all()
+    name = request.query_params.get('name', None)
+    if name is not None:
+        if name[0].islower():
+            raise ValidationError("Puppy name must start with uppercase")
+        else:
+            puppies = puppies.filter(name=name)
+    serializer = PuppySerializer(puppies, many=True)
+    return JsonResponse(serializer.data, safe=False)
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Validation as part of component instance}
+    \begin{minted}[fontsize=\footnotesize]{python}
+class PuppyName:
+    def __init__(self, name: QueryParam):
+        if name[0].islower():
+            raise ValidationError("Puppy name must start with uppercase")
+
+        self.value = name
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{View with injected components}
+    \begin{minted}[fontsize=\footnotesize]{python}
+def list_puppy(name: PuppyName) -> Response:
+    """
+    List all puppies !
+    """
+    puppies = Puppy.objects.all()
+    name = request.query_params.get('name', None)
+    if name is not None:
+        puppies = puppies.filter(name=name.value)
+    serializer = PuppySerializer(puppies, many=True)
+    return JsonResponse(serializer.data, safe=False)
+    \end{minted}
+\end{frame}

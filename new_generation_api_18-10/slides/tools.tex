@@ -1,0 +1,39 @@
+% Benefits
+\section{Benefits}
+\begin{frame}{Docs in sync with code}
+    \textbf{\color{Teal}{GET}} \texttt{/puppy/}\\
+    \textit{List all puppies !}\\
+    Query params: \textbf{name}\\
+    Response body: \textbf{List[PuppyType]}
+
+    \vspace{3em}
+
+    \textbf{\color{Teal}{POST}} \texttt{/puppy/}\\
+    \textit{Register a new puppy !}\\
+    Request body: \textbf{PuppyType}\\
+    Response body: \textbf{PuppyType}
+\end{frame}
+
+\begin{frame}[fragile]{Mock the API}
+    Views defined plain input parameters and output schema so that can be completely mocked.
+
+    \begin{minted}[fontsize=\footnotesize]{python}
+def list_puppy(name: PuppyName) -> typing.List[PuppyType]:
+    """
+    List all puppies !
+    """
+    pass
+    \end{minted}
+\end{frame}
+
+\begin{frame}{Generate API Schema}
+    All these changes made that API to expose all the information needed to automatically generate the schema.
+    
+    \textbf{Types} has a direct relation to \textbf{JSON Schema}, so each one can generate his own schema.
+
+    The whole \textbf{API can be inspected} to build the schema based on standards like \textbf{OpenAPI} (former Swagger).
+\end{frame}
+
+\begin{frame}{Generic clients}
+    Based on standard schemas such as \textbf{OpenAPI} it's quite easy to create generic clients for our API.
+\end{frame}

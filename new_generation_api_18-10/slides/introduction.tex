@@ -1,0 +1,60 @@
+% Introduction 
+\section{Introduction}
+\begin{frame}{Introduction}
+    What's wrong with current API frameworks? Nothing at all, except they seems a bit \textbf{old} and \textbf{unexpressive}.
+
+    Let's improve it using new Python functionalities like:
+    
+    \begin{itemize}
+        \item Type annotation.
+        \item Module \texttt{typing}. 
+        \item New \texttt{async}/\texttt{await} semantic.
+        \item Module \texttt{asyncio}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction}
+    The codebase can be very \textbf{expressive} in terms of describing the API. Make it the first information source of the API.
+\end{frame}
+
+\begin{frame}{Goals}
+    \textbf{Speep up} API building and maintenance.
+
+    Create an API with a codebase \textbf{expressive}.
+
+    An \textbf{interactive documentation} kept \textbf{in sync} with the API.
+
+    A way to infer and generate API \textbf{schema}.
+
+    Possibility to work with \textbf{ASGI} and \textbf{websockets}.
+\end{frame}
+
+\begin{frame}{Example API}
+    Puppy API \faPaw
+
+    \begin{itemize}
+        \item \textbf{Register} a new puppy.
+        \item \textbf{List} all puppies, filtered by name.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Example API}
+    \begin{minted}[fontsize=\footnotesize]{python}
+def puppy(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        serializer = PuppySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+    if request.method == "GET":
+        puppies = Puppy.objects.all()
+        name = request.query_params.get('name', None)
+        if name is not None:
+            puppies = puppies.filter(name=name)
+        serializer = PuppySerializer(puppies, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    \end{minted}
+\end{frame}

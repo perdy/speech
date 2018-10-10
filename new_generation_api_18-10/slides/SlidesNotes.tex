@@ -1,0 +1,70 @@
+\documentclass[final, 9pt, svgnames]{beamerPerdy}
+\usetheme[
+    titleformat title=smallcaps,
+    progressbar=frametitle,
+    numbering=fraction
+]{metropolis}
+
+\definecolor{Teal}{HTML}{008080}
+
+\usetikzlibrary{positioning,fit,arrows.meta}
+
+\setbeameroption{show notes on second screen=right}
+
+\setdefaultlanguage{english}
+
+% Comando para usar comentarios
+\newcommand{\comment}[1]{\textcolor{comment}{\footnotesize{#1}\normalsize}}
+
+\newcommand\ImageNode[3][]{
+    \node[draw=mLightBrown,line width=1pt,#1] (#2) {\includegraphics[width=1cm,height=1cm]{#3}};
+}
+
+
+\title{New Generation of APIs}
+\author[J. A. Perdiguero López]{
+José Antonio Perdiguero López\\
+\href{http://www.perdy.io}{\scriptsize{\faGlobe\; http://www.perdy.io}}\\
+\href{https://github.com/PeRDy}{\scriptsize{\faGithub\; https://github.com/PeRDy}}\\
+\href{https://www.linkedin.com/in/perdy}{\scriptsize{\faLinkedin\; https://www.linkedin.com/in/perdy}}\\
+\href{mailto://perdy@perdy.io}{\scriptsize{\faAt\; perdy@perdy.io}}}
+\institute[Whalar]{Head of Data Science @ Whalar}
+\date{October 6, 2018}
+
+\begin{document}
+
+% Title
+\begin{frame}[noframenumbering, plain]
+    \titlepage
+\end{frame}
+
+% Index
+\begin{frame}[noframenumbering, plain]{Index}
+    \setbeamertemplate{section in toc}[circle]
+    \tableofcontents
+\end{frame}
+
+\include{introduction}
+\include{routes}
+\include{views}
+\include{components}
+\include{types}
+\include{tools}
+
+\begin{frame}[standout]
+    \Huge{Open source your code !}
+
+    \Huge{\faLinux}
+
+    \href{https://discuss.apistar.org/}{\scriptsize{https://discuss.apistar.org/}}
+
+    \href{https://github.com/encode/apistar/tree/version-0.5.x}{\scriptsize{https://github.com/encode/apistar/tree/version-0.5.x}}
+
+    \href{https://github.com/perdy/apistar-crud}{\scriptsize{https://github.com/perdy/apistar-crud}}
+
+    \href{https://github.com/encode/starlette}{\scriptsize{https://github.com/encode/starlette}}
+
+    \href{https://github.com/perdy/starlette-api}{\scriptsize{https://github.com/perdy/starlette-api}}
+\end{frame}
+
+\end{document}

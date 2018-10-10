@@ -1,0 +1,30 @@
+% Views
+\section{Views}
+\begin{frame}[fragile]{Async view}
+    \begin{minted}[fontsize=\footnotesize]{python}
+async def register_puppy(request):
+    """
+    Register a new puppy !
+    """
+    data = JSONParser().parse(request)
+    serializer = PuppySerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        # Do your async stuff...
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
+
+def list_puppy(request):
+    """
+    List all puppies !
+    """
+    puppies = Puppy.objects.all()
+    name = request.query_params.get('name', None)
+    if name is not None:
+        puppies = puppies.filter(name=name)
+    serializer = PuppySerializer(puppies, many=True)
+    return JsonResponse(serializer.data, safe=False)
+    \end{minted}
+\end{frame}
+
+

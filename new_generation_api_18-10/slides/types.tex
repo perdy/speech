@@ -1,0 +1,26 @@
+% Types
+\section{Types}
+\begin{frame}[fragile]{Types to define Schemas}
+    \begin{minted}[fontsize=\footnotesize]{python}
+class PuppyType(Type):
+    name = validators.String(
+        title="name",
+        description="Word to pay attention"
+    )
+    age = validators.Integer(
+        title="age",
+        description="I'm a puppy yet?"
+    )
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Views using Types}
+    \begin{minted}[fontsize=\footnotesize]{python}
+def register_puppy(puppy: PuppyType) -> PuppyType:
+    """
+    Register a new puppy !
+    """
+    Puppy.objects.create(puppy)
+    return JsonResponse(puppy, status=201)
+    \end{minted}
+\end{frame}
