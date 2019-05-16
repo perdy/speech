@@ -181,4 +181,13 @@ TSWLatexianTemp*
 
 # Vim
 *.swp
+
+# Internal
 *SlidesNotes.pdf
+
+.gauge/
+reports/
+logs/
+.env/
+.ipynb_checkpoints/
+__pycache__/
