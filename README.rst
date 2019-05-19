@@ -14,3 +14,4 @@ Speech index
 * `Flex Schemas with PostgreSQL and Django <https://github.com/PeRDy/speech/blob/master/postgres_flex_schemas_17-05/slides/Slides.pdf>`_: OpenSouthCode (2017-05), Málaga Python MeetUp.
 * `Create Package and Distribute your own application <https://github.com/PeRDy/speech/blob/master/create_package_and_distribute_17-09/slides/Slides.pdf>`_: PyCon (2017-09).
 * `New generation of APIs <https://github.com/PeRDy/speech/blob/master/new_generation_api_18-10/slides/Slides.pdf>`_: PyCon (2018-10)
+* `Validation of Machine Learning Services <https://github.com/PeRDy/speech/blob/master/ml_services_validation_19-05/slides/Slides.pdf>`_: AfterTest (2019-05), Madrid AfterTest meetup.

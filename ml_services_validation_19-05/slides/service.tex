@@ -1,0 +1,137 @@
+% Building a Machine Learning Service
+\section{Building a Machine Learning Service}
+\begin{frame}{How to expose the ML model?}
+    Machine Learning models can be used either as an internal piece of a service or as a service itself.
+
+    If it is used as an \textbf{internal piece} you won't notice it, such as scoring or recommendation systems within bigger products like Spotify or Netflix.
+
+    But you can also find them as a \textbf{service that exposes an API} to directly interact with the model. There are many examples of that in AWS, Google Cloud, Azure...
+\end{frame}
+
+\begin{frame}{Wrapping up a ML model}
+    One of the most widely adopted way of serving a ML model is to wrap it into a \textbf{REST API} with specific methods for calling the model.
+\end{frame}
+
+\begin{frame}[fragile]{The Service}
+    Our service will expose a single endpoint that let us interact with the model.
+
+    \begin{exampleblock}{Request}
+        {
+            \footnotesize
+            \begin{description}
+                \item[Verb] \texttt{\textbf{GET}}
+                \item[URL] \texttt{https://service.url/analyze/}
+                \item[Params] \texttt{text=The girl is having fun while playing with her toys}
+            \end{description}
+        }
+    \end{exampleblock}
+
+    \begin{exampleblock}{Response}
+        \begin{minted}[fontsize=\footnotesize]{js}
+{
+  "score": 0.5628073215484619,
+  "text": "The girl is having fun while playing with her toys",
+  "sentiment": "Positive"
+}
+        \end{minted}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Building a REST API with Flama}
+    To build a REST API we need to define:
+
+    \begin{enumerate}
+        \item A \textbf{component} that loads our ML model.
+        \item The \textbf{data schema} for our response.
+        \item The \textbf{view} function that will be called through requests to \texttt{/analyze/} endpoint.
+        \item The whole API \textbf{application}.
+    \end{enumerate}
+
+    Everything put together is less than 100 lines of python code.
+\end{frame}
+
+\begin{frame}[fragile]{ML Component}
+    \begin{minted}[fontsize=\footnotesize]{python}
+class SentimentAnalysisModel:
+    def __init__(self, model, words: typing.Dict[str, int]):
+        self.model = model
+        self.words = words
+
+    def predict(self, text: str) -> typing.Tuple[float, str]:
+        x = text.lower().split()
+        x = [self.words.get(i, 0)
+             if self.words.get(i, 0) <= VOCABULARY_LENGTH else 0 for i in x]
+        x = sequence.pad_sequences([x], maxlen=MAX_WORDS)
+        score = self.model.predict(x)
+        sentiment = "Positive" if self.model.predict_classes(x)[0][0] == 1 \
+            else "Negative"
+
+        return score, sentiment
+
+class SentimentAnalysisModelComponent(Component):
+    def __init__(self, model_path: str, words_path: str):
+        self.model = load_model(model_path)
+        self.model._make_predict_function()
+        with open(words_path) as f:
+            self.words = json.load(f)
+
+    def resolve(self) -> SentimentAnalysisModel:
+        return SentimentAnalysisModel(model=self.model, words=self.words)
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Data Schema}
+    \begin{minted}[fontsize=\footnotesize]{python}
+class SentimentAnalysis(Schema):
+    text = fields.String(
+        title="text",
+        description="Text to analyze"
+    )
+    score = fields.Float(
+        title="score",
+        description="Sentiment score in range [0,1]"
+    )
+    sentiment = fields.String(
+        title="sentiment",
+        description="Sentiment class (Positive or Negative)"
+    )
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Analysis View}
+    \begin{minted}[fontsize=\footnotesize]{python}
+def analyze(text: str, model: SentimentAnalysisModel) -> SentimentAnalysis:
+    """
+    tags:
+        - sentiment-analysis
+    summary:
+        Sentiment analysis.
+    description:
+        Performs a sentiment analysis on a given text.
+    responses:
+        200:
+            description: Analysis result.
+    """
+    text = unquote(text)
+    score, sentiment = model.predict(text)
+
+    return {
+        "text": text,
+        "score": score,
+        "sentiment": sentiment,
+    }
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{API Application}
+    \begin{minted}[fontsize=\footnotesize]{python}
+app = Flama(
+    components=[SentimentAnalysisModelComponent("model.h5", "words.json")],
+    title="Sentiment Analysis",
+    version="0.1",
+    description="A sentiment analysis API for movies reviews",
+)
+
+app.add_route("/analyze/", analyze, methods=["GET"])
+    \end{minted}
+\end{frame}
