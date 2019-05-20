@@ -47,10 +47,6 @@ class SentimentAnalysis(Schema):
     sentiment = fields.String(title="sentiment", description="Sentiment class (Positive or Negative)")
 
 
-def home():
-    return "Welcome to Sentiment Analysis API"
-
-
 def analyze(text: str, model: SentimentAnalysisModel) -> SentimentAnalysis:
     """
     tags:
@@ -66,11 +62,7 @@ def analyze(text: str, model: SentimentAnalysisModel) -> SentimentAnalysis:
     text = unquote(text)
     score, sentiment = model.predict(text)
 
-    return {
-        "text": text,
-        "score": score,
-        "sentiment": sentiment,
-    }
+    return {"text": text, "score": score, "sentiment": sentiment}
 
 
 app = Flama(
@@ -78,9 +70,9 @@ app = Flama(
     title="Sentiment Analysis",  # API title
     version="0.1",  # API version
     description="A sentiment analysis API for movies reviews",  # API description
+    redoc="/redoc/",
 )
 
-app.add_route("/", home, methods=["GET"])
 app.add_route("/analyze/", analyze, methods=["GET"])
 
 

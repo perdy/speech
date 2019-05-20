@@ -3,7 +3,11 @@
 \begin{frame}{How to expose the ML model?}
     Machine Learning models can be used either as an internal piece of a service or as a service itself.
 
+    \pause
+
     If it is used as an \textbf{internal piece} you won't notice it, such as scoring or recommendation systems within bigger products like Spotify or Netflix.
+
+    \pause
 
     But you can also find them as a \textbf{service that exposes an API} to directly interact with the model. There are many examples of that in AWS, Google Cloud, Azure...
 \end{frame}
@@ -21,7 +25,7 @@
             \begin{description}
                 \item[Verb] \texttt{\textbf{GET}}
                 \item[URL] \texttt{https://service.url/analyze/}
-                \item[Params] \texttt{text=The girl is having fun while playing with her toys}
+                \item[Params] \texttt{text=The\%20girl\%20is\%20having\%20fun\%20while\%20playing}
             \end{description}
         }
     \end{exampleblock}
@@ -29,9 +33,9 @@
     \begin{exampleblock}{Response}
         \begin{minted}[fontsize=\footnotesize]{js}
 {
-  "score": 0.5628073215484619,
-  "text": "The girl is having fun while playing with her toys",
-  "sentiment": "Positive"
+  "text": "The girl is having fun while playing",
+  "sentiment": "Positive",
+  "score": 0.6321590542793274
 }
         \end{minted}
     \end{exampleblock}
@@ -40,14 +44,16 @@
 \begin{frame}{Building a REST API with Flama}
     To build a REST API we need to define:
 
-    \begin{enumerate}
+    \begin{enumerate}[<+->]
         \item A \textbf{component} that loads our ML model.
         \item The \textbf{data schema} for our response.
         \item The \textbf{view} function that will be called through requests to \texttt{/analyze/} endpoint.
         \item The whole API \textbf{application}.
     \end{enumerate}
 
-    Everything put together is less than 100 lines of python code.
+    \only<4>{
+        Everything put together is less than 100 lines of python code.
+    }
 \end{frame}
 
 \begin{frame}[fragile]{ML Component}
