@@ -1,0 +1,77 @@
+\documentclass[final, 9pt, svgnames, xcolor=table]{beamerPerdy}
+\usetheme[
+    titleformat title=smallcaps,
+    progressbar=frametitle,
+    numbering=fraction
+]{metropolis}
+
+% Use Fira Sans to improve readability
+\setsansfont[BoldFont={Fira Sans SemiBold}]{Fira Sans Book}
+
+\definecolor{Teal}{HTML}{008080}
+
+\usetikzlibrary{positioning,fit,arrows.meta}
+
+%\setbeameroption{show notes on second screen=right}
+
+\setdefaultlanguage{english}
+
+% Comando para usar comentarios
+\newcommand{\comment}[1]{\textcolor{comment}{\footnotesize{#1}\normalsize}}
+
+\newcommand\ImageNode[3][]{
+    \node[draw=mLightBrown,line width=1pt,#1] (#2) {\includegraphics[width=1cm,height=1cm]{#3}};
+}
+
+
+\title{Validation of Machine Learning services}
+\subtitle{Do not let your Machine Learning service going into production without being tested}
+\author[J. A. Perdiguero López]{
+José Antonio Perdiguero López\\
+\href{http://www.perdy.io}{\scriptsize{\faGlobe\; http://www.perdy.io}}\\
+\href{https://github.com/perdy}{\scriptsize{\faGithub\; https://github.com/perdy}}\\
+\href{https://www.linkedin.com/in/perdy}{\scriptsize{\faLinkedin\; https://www.linkedin.com/in/perdy}}\\
+\href{mailto://perdy@perdy.io}{\scriptsize{\faAt\; perdy@perdy.io}}}
+\institute[Piksel]{Software Architect @ Piksel}
+\date{May 20, 2019}
+
+\begin{document}
+
+% Title
+\begin{frame}[noframenumbering, plain]
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{img/portada_4.3.jpeg}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[noframenumbering, plain]
+    \titlepage
+\end{frame}
+
+% Index
+\begin{frame}[noframenumbering, plain]{Index}
+    \setbeamertemplate{section in toc}[circle]
+    \tableofcontents
+\end{frame}
+
+\include{introduction}
+\include{machine_learning}
+\include{service}
+\include{test}
+
+\begin{frame}[standout]
+    \Huge{Support open source projects: \\ \faStar \, Give a star\\ \faBullhorn \, Spread the word}
+
+    \qquad
+
+    \href{https://flama.perdy.io}{https://flama.perdy.io/}
+
+    \href{https://getgauge.io/}{https://getgauge.io/}
+
+    \href{https://www.tensorflow.org/}{https://www.tensorflow.org}
+
+    \href{https://www.python.org/}{https://www.python.org/}
+\end{frame}
+
+\end{document}

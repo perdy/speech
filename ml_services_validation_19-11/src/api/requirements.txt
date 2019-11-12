@@ -1,0 +1,8 @@
+jupyter
+keras
+numpy==1.16.1
+h5py
+tensorflow
+flama[full]
+uvicorn
+marshmallow==3.0.0rc5
