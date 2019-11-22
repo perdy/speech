@@ -1,0 +1,60 @@
+FROM {{ from_image }} AS builder
+{% for label in labels -%}
+    LABEL {{ label }}
+{% endfor %}
+
+ENV LC_ALL='C.UTF-8' PYTHONIOENCODING='utf-8'
+ENV PROJECT_DIR=/srv/apps/{{ project.name }}
+ENV APP_DIR=$PROJECT_DIR/{{ app.path }}
+ENV LOG_DIR=$PROJECT_DIR/logs
+ENV TEST_DIR=$PROJECT_DIR/{{ test.path }}
+ENV PYTHONPATH=$APP_DIR:$PYTHONPATH
+WORKDIR $PROJECT_DIR
+
+{% if app.packages.runtime %}
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -q -y {{ app.packages.runtime|join(" ") }} && \
+    apt-get clean && \
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/*
+{% endif -%}
+
+# Install Gauge
+RUN curl -SsL https://downloads.gauge.org/stable | sh && \
+    gauge telemetry off && \
+    gauge install python && \
+    gauge install html-report && \
+    gauge install xml-report && \
+    gauge install screenshot && \
+    gauge update -c && \
+    gauge update -a
+
+# Install python requirements
+COPY {{ app.requirements|join(" ") }} $PROJECT_DIR/
+RUN apt-get update && \
+    {% if app.packages.build %}apt-get install -q -y {{ app.packages.build|join(" ") }} && {% endif %} \
+    python -m pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt -c constraints.txt && \
+    {% if app.packages.build %}apt-get purge -y --auto-remove {{ app.packages.build|join(" ") }} && {% endif %} \
+    apt-get clean && \
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/*
+
+# Create initial dirs
+RUN mkdir -p $APP_DIR $LOG_DIR $TEST_DIR
+
+# Copy application
+{% if project.files %}
+COPY {{ project.files|join(" ") }} $PROJECT_DIR/
+{% endif %}
+COPY {{ app.path }} $APP_DIR/
+COPY {{ test.path }} $TEST_DIR/
+WORKDIR $PROJECT_DIR
+
+ENTRYPOINT ["jupyter"]
+CMD ["notebook", "--ip=0.0.0.0", "--port=8080", "--allow-root", "--no-browser"]

@@ -1,0 +1,21 @@
+# Tests
+.pytest_cache/
+test-results/
+.coverage
+
+# Project data and cache
+**/__pycache__
+.data/
+logs/
+.idea/
+
+# Docker config
+Dockerfile
+Dockerfile.j2
+.dockerignore
+
+# Project config and metadata
+.git/
+.gitignore
+make
+README.md
